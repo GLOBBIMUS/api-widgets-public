@@ -1,7 +1,9 @@
 package com.example.widget.controller;
 
+import com.example.widget.domain.GadgetEntity;
 import com.example.widget.domain.WidgetEntity;
 import com.example.widget.dto.WidgetResponse;
+import com.example.widget.repository.GadgetRepository;
 import com.example.widget.repository.WidgetRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +32,9 @@ class WidgetControllerComponentTests {
     private WidgetRepository widgetRepository;
 
     @Autowired
+    private GadgetRepository gadgetRepository;
+
+    @Autowired
     private ObjectMapper mapper;
 
     @Autowired
@@ -37,7 +42,10 @@ class WidgetControllerComponentTests {
 
     @Test
     void FindAll() throws Exception {
-        WidgetEntity widget = this.widgetRepository.save(new WidgetEntity("Cool fake widget"));
+
+        WidgetEntity widget = this.widgetRepository.save(new WidgetEntity(1L,"Cool fake widget"));
+        GadgetEntity gadget1 = this.gadgetRepository.save(new GadgetEntity("First fake gadget", 1L));
+        GadgetEntity gadget2 = this.gadgetRepository.save(new GadgetEntity("Second fake gadget", 1L));
 
         MockHttpServletResponse response = mockMvc.perform(get("/api/v1/widgets"))
                 .andExpect(status().isOk()).andReturn().getResponse();
@@ -47,6 +55,11 @@ class WidgetControllerComponentTests {
 
         assertThat(widgetResponseList.size(), equalTo(1));
         assertThat(widgetResponseList.get(0).getName(), equalTo(widget.getName()));
+
+        //To check if we get associated gadgets
+        assertThat(widgetResponseList.get(0).getGadgets().size(), equalTo(2));
+        assertThat(widgetResponseList.get(0).getGadgets().get(0).getName(), equalTo(gadget1.getName()));
+        assertThat(widgetResponseList.get(0).getGadgets().get(1).getName(), equalTo(gadget2.getName()));
     }
 
     @Test
