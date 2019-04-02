@@ -64,6 +64,8 @@ class WidgetControllerComponentTests {
 
     @Test
     void FindFirstPage() throws Exception {
+        this.widgetRepository.deleteAll();
+
         WidgetEntity widget1 = this.widgetRepository.save(new WidgetEntity("Cool fake widget1"));
         WidgetEntity widget2 = this.widgetRepository.save(new WidgetEntity("Cool fake widget2"));
         WidgetEntity widget3 = this.widgetRepository.save(new WidgetEntity("Cool fake widget3"));
