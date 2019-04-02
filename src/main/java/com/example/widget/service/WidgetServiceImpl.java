@@ -9,6 +9,8 @@ import com.example.widget.repository.GadgetRepository;
 import com.example.widget.repository.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,10 @@ public class WidgetServiceImpl implements WidgetService {
     }
 
     @Override
-    public List<WidgetResponse> findAll() {
+    public List<WidgetResponse> findAll(Pageable pageable) {
         List<WidgetResponse> response = new ArrayList<>();
 
-        List<WidgetEntity> widgetEntities = this.widgetRepository.findAll();
+        Page<WidgetEntity> widgetEntities = this.widgetRepository.findAll(pageable);
 
         List<GadgetEntity> gadgetEntities = this.gadgetRepository.findAll();
 
