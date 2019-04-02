@@ -22,8 +22,9 @@ public class WidgetServiceImpl implements WidgetService {
     @Autowired
     private GadgetRepository gadgetRepository;
 
-    public WidgetServiceImpl(WidgetRepository widgetRepository) {
+    public WidgetServiceImpl(WidgetRepository widgetRepository, GadgetRepository gadgetRepository) {
         this.widgetRepository = widgetRepository;
+        this.gadgetRepository = gadgetRepository;
     }
 
     @Override
