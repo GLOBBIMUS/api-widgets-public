@@ -48,4 +48,25 @@ class WidgetControllerComponentTests {
         assertThat(widgetResponseList.size(), equalTo(1));
         assertThat(widgetResponseList.get(0).getName(), equalTo(widget.getName()));
     }
+
+    @Test
+    void FindFirstPage() throws Exception {
+        WidgetEntity widget1 = this.widgetRepository.save(new WidgetEntity("Cool fake widget1"));
+        WidgetEntity widget2 = this.widgetRepository.save(new WidgetEntity("Cool fake widget2"));
+        WidgetEntity widget3 = this.widgetRepository.save(new WidgetEntity("Cool fake widget3"));
+        WidgetEntity widget4 = this.widgetRepository.save(new WidgetEntity("Cool fake widget4"));
+
+
+        //Here I will test the pagination
+        //This mock test will require the first page, size of the page is 2. And it will sort it by field "name"
+        MockHttpServletResponse response = mockMvc.perform(get("/api/v1/widgets?page=0&size=2&sort=name"))
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        List<WidgetResponse> widgetResponseList = mapper.readValue(response.getContentAsString(), new TypeReference<List<WidgetResponse>>() {
+        });
+
+        assertThat(widgetResponseList.size(), equalTo(2));
+        assertThat(widgetResponseList.get(0).getName(), equalTo(widget1.getName()));
+        assertThat(widgetResponseList.get(1).getName(), equalTo(widget2.getName()));
+    }
 }
