@@ -24,7 +24,6 @@ public class WidgetController {
         this.widgetService.createWidget(createWidgetRequest);
     }
 
-    // TODO Return associated Gadgets in the with the widgets.
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<WidgetResponse> getWidgets() {
